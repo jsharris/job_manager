@@ -1,31 +1,11 @@
-# README #
+# job_manager
+Simple web based API providing a framework for batch job tracking.
 
-* Quick summary
-Framework for registering and tracking batch jobs.  Includes email notification events on completion, error and delete events
-* Version 1.0
+### Requirements
+* postgreSQL - any version should work
+* Python - 2.7 - not tested on anything later
 
-
-### How do I get set up? ###
-
-* Summary of set up
-Requires a postgres database.
-Run the sql scripts:
-    create_db.sql
-    seed_data.sql
-Run the server - python job_manager.py
-
-* Configuration
-via ini files located in the ini_files directory
-
-* Dependencies
-postgres server
-python
-
-* Database configuration
-see the sql files
-
-* How to run tests
-unit tests run under pycharm
-
-* Deployment instructions
-See doc in the docs directory
+### Install Docs
+See docs/installation_instructions for full details<br>
+* Assumes being installed by and admin or a user with sudo privs.
+* Must also have access to a postgreSQL account with an admin role as a user and a database will be created.
