@@ -14,15 +14,13 @@
 * virtualenv Ð-no-site-packages Env
 
 ### Update path so local python is found first
-* Edit .profile and add the following to the end of the file
-
+Edit .profile and add the following to the end of the file
 
     if [ -d "$HOME/Env" ] ; then
     		PATH=$HOME/Env/bin:$PATH
 	fi
 
-* Reload the user environment
-
+Reload the user environment
 
     . .profile
     
@@ -54,8 +52,7 @@ Ini file configuration
 ## Database Configuration - This will require a postgreSQL account with the admin role
     cd ~job_manager/tools
     
-* Update create_db.sql to change the password for the job_manager account
-
+Update create_db.sql to change the password for the job_manager account
 
     psql ÐU{POSTGRESQL_ADMIN_ACCOUNT} < create_db.sql
     psql ÐU{POSTGRESQL_ADMIN_ACCOUNT} < seed_data.sql
@@ -65,18 +62,16 @@ Ini file configuration
     nohup scripts/start_job_manager_server.sh &
     
 ## Optional - Install the start/stop scripts for boot start and shutdown
-* Assumes Ubuntu 12.04, change as required for platform specific commands
-
+Assumes Ubuntu 12.04, change as required for platform specific commands
 
     sudo cp scripts/init_job_manager server.sh /etc/init.d/job_manager
     sudo update-rc.d job_manager defaults
     
     
 ## Optional - Install a ProxyPass rule for Apache
-* Add this before the ProxyPass / ProxyPassReverse entry for / - if no ProxyPass, add right after DocumentRoot definition
-* Warning:  Make sure your apache is configured correctly before enabling any ProxyPass rules
-* Change the port if necessary to the one you configured in the ini file
-
+Add this before the ProxyPass / ProxyPassReverse entry for / - if no ProxyPass, add right after DocumentRoot definition
+Warning:  Make sure your apache is configured correctly before enabling any ProxyPass rules
+Change the port if necessary to the one you configured in the ini file
 
     ProxyPass        /job_manager/	http://localhost:9989/
     ProxyPassReverse /job_manager/	http://localhost:9989/
