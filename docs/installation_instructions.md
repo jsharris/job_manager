@@ -17,7 +17,6 @@
 * Edit .profile and add the following to the end of the file
 
 
-    # add local python to beginning of path
     if [ -d "$HOME/Env" ] ; then
     		PATH=$HOME/Env/bin:$PATH
 	fi
@@ -36,16 +35,14 @@
     pip install psycopg2
     
 ### Localization
-* Edit job_manager/scripts/start_job_manager_service.sh
-
+Edit job_manager/scripts/start_job_manager_service.sh
 
     Change the following line to something server appropriate:
         export INI_FILE=BOGUS.ini
     To something server appropriate, like:
         export INI_FILE=qa.ini
 
-* Ini file configuration
-
+Ini file configuration
   
     Copy the sample.ini to an appropriate name
     Edit the new file
