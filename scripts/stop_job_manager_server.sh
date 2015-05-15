@@ -7,9 +7,9 @@
 #
 
 pids=`ps -ef | grep job_manager | grep ini | grep -v grep | awk '{print $2}'`
-echo "list of pids: " $pids
-for pid in $pids
+echo "list of pids: " ${pids}
+for pid in ${pids}
 do
-    echo "killing: " $pid
-    kill $pid
+    echo "killing: " ${pid}
+    kill ${pid}
 done

@@ -5,8 +5,8 @@
 * Assumes: Linux (ubuntu), easily adaptable to other Unix/Linux platforms
 
 ## Account Creation from an account with sudo privs
-* sudo useradd job_manager
-* sudo passwd job_manager
+    sudo useradd job_manager
+    sudo passwd job_manager
 
 ## Account Configuration
     sudo job_manager
@@ -25,8 +25,7 @@ Reload the user environment
 
     . .profile
     
-* Add python packages
-
+Add python packages
 
     pip install flask
     pip install ujson

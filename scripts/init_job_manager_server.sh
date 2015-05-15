@@ -8,7 +8,7 @@
 # Default-Start:        2 3 4 5
 # Default-Stop:         0 1 6
 # Short-Description:   	Job Manager Service
-# Description:          Job Manger  Service
+# Description:          Job Manger Service
 ### END INIT INFO
 
 
