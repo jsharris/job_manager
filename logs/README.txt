@@ -1,0 +1,1 @@
+Logs go in this directory as they are rotated out

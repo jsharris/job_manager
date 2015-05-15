@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Job Manager Usage</title>
+</head>
+<body>
+<h1>Welcome to the Job Manager API</h1><br>
+<br>
+<h2>List of supported calls and associated parameters</h2>
+All commands return JSON formatted results<br>
+<ul>
+    <li><h3>status</h3>
+        Provides status on jobs<br>
+        There are 2 mutually exclusive parameters, if both are specified, it will default to using the 'id'
+        <ul>
+            <li><b>id</b> - Requires a numeric job id<br>
+            </li>
+            <li><b>email</b> - Requires a valid Shared Shelf login email address<br>
+            </li>
+        </ul>
+        <br>
+        <b>Examples of usage:</b><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;/status?id=1234<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;/status?email=abc@artstor.org<br>
+        <br>
+        <b>Examples of success and failure messages:</b><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<b>Success:</b>&nbsp;&nbsp;{'status': 'Success', 'data': [{'status': 'Completed', 'last_updated': '05/28/2014 10:57', 'message': 'completed', 'job_type': 'OAI', 'submitted': '05/28/2014 10:57', 'email': 'abc@artstor.org', 'notify': True, 'percentage': 100, 'id': 1234}]}<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<b>Failure:</b>&nbsp;&nbsp;{'status': 'Failure', 'message': 'Unable to find job(s)'}<br>
+        <br>
+        <br>
+    </li>
+    <li><h3>new</h3>
+        Creates a new job<br>
+        Requires the following parameters:
+        <ul>
+            <li><b>email</b> - Requires a valid Shared Shelf login email address<br>
+            </li>
+            <li><b>job_type</b> - Requires a valid registered project name<br>
+            </li>
+            <li><b>notify</b> - Specifies whether user should be notified on completion, error and delete actions<br>
+            </li>
+        </ul>
+        <br>
+         <b>Examples of usage:</b><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;/new?email=abc@artstor.org&job_type='OAI'&notify=True<br>
+        <br>
+        <b>Examples of success and failure messages:</b><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<b>Success:</b>&nbsp;&nbsp;{'status': 'Success', 'data': {'job_id': 1234}}<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<b>Failure:</b>&nbsp;&nbsp;{'status': 'Failure', 'message': 'Unable to create the job'}<br>
+        <br>
+        <br>
+    </li>
+    <li><h3>update</h3>
+        Update a job with completion percentage<br>
+        Requires the following parameters:
+        <ul>
+            <li><b>id</b> - Requires a valid job id<br>
+            </li>
+            <li><b>percentage</b> - Requires an integer representing completion percentage<br>
+            </li>
+        </ul>
+        <br>
+         <b>Examples of usage:</b><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;/update?id=1234&percentage=50<br>
+        <br>
+        <b>Examples of success and failure messages:</b><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<b>Success:</b>&nbsp;&nbsp;{'status': 'Success'}<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<b>Failure:</b>&nbsp;&nbsp;{'status': 'Failure', 'message': 'Unable to update the job'}<br>
+        <br>
+        <br>
+    </li>
+    <li><h3>completed</h3>
+        Update a job to 'Completed' status<br>
+        Requires the following parameters:
+        <ul>
+            <li><b>id</b> - Requires a valid job id<br>
+            </li>
+            <li><b>message</b> - Requires a json formatted 2 element list for notification
+                <ul>
+                    <li>Header - Short status message</li>
+                    <li>Description - full text - can be HTML formatted, keep it simple to not mess up formatting</li>
+                </ul><br>
+            </li>
+        </ul>
+        <br>
+         <b>Examples of usage:</b><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;/completed?id=1234&message=['Job Completed', 'Completed with No Errors']<br>
+        <br>
+        <b>Examples of success and failure messages:</b><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<b>Success:</b>&nbsp;&nbsp;{'status': 'Success'}<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<b>Failure:</b>&nbsp;&nbsp;{'status': 'Failure', 'message': 'Unable to update the job'}<br>
+        <br>
+        <br>
+    </li>
+    <li><h3>error</h3>
+        Update a job to 'Error' status<br>
+        Requires the following parameters:
+        <ul>
+            <li><b>id</b> - Requires a valid job id<br>
+            </li>
+            <li><b>message</b> - Requires a message string to use for notification - should be HTML formatted<br>
+            </li>
+        </ul>
+        <br>
+         <b>Examples of usage:</b><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;/error?id=1234&message='Problem with processing, please resubmit'<br>
+        <br>
+        <b>Examples of success and failure messages:</b><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<b>Success:</b>&nbsp;&nbsp;{'status': 'Success'}<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<b>Failure:</b>&nbsp;&nbsp;{'status': 'Failure', 'message': 'Unable to update the job'}<br>
+        <br>
+        <br>
+    </li>
+    <li><h3>delete</h3>
+        Update a job to 'Deleted' status<br>
+        Requires the following parameters:
+        <ul>
+            <li><b>id</b> - Requires a valid job id<br>
+            </li>
+            <li><b>message</b> - Requires a message string to use for notification - should be HTML formatted<br>
+            </li>
+        </ul>
+        <br>
+         <b>Examples of usage:</b><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;/delete?id=1234&message='Problem with processing, please resubmit'<br>
+        <br>
+        <b>Examples of success and failure messages:</b><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<b>Success:</b>&nbsp;&nbsp;{'status': 'Success'}<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<b>Failure:</b>&nbsp;&nbsp;{'status': 'Failure', 'message': 'Unable to update the job'}<br>
+        <br>
+        <br>
+    </li>
+    <li><h3>purge</h3>
+        Remove a job from the job manager - <u>This should only be used in extreme circumstances</u><br>
+        Requires the following parameters:
+        <ul>
+            <li><b>id</b> - Requires a valid job id<br>
+            </li>
+            <li><b>auth_key</b> - Requires an auth key to be able to purge a job<br>
+            </li>
+        </ul>
+        <br>
+         <b>Examples of usage:</b><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;/purge?id=1234&auth_key='not a real auth key'<br>
+        <br>
+        <b>Examples of success and failure messages:</b><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<b>Success:</b>&nbsp;&nbsp;{'status': 'Success'}<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<b>Failure:</b>&nbsp;&nbsp;{'status': 'Failure', 'message': 'Unable to purge the job'}<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<b>Failure:</b>&nbsp;&nbsp;{'status': 'Failure', 'message': 'Invalid auth_key provided'}<br>
+        <br>
+        <br>
+    </li>
+</ul>
+</body>
+</html>
