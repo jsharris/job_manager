@@ -7,7 +7,7 @@ from libs.environment import *
 import sys
 
 
-def buildLogging():
+def build_logging():
     log = logging.getLogger()
     log.setLevel(logging.INFO)
     fh = logging.FileHandler('job_manager.log')
@@ -18,7 +18,7 @@ def buildLogging():
 
 
 app = Flask(__name__)
-buildLogging()
+build_logging()
 local = dict()
 
 

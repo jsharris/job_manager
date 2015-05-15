@@ -2,13 +2,10 @@ __author__ = 'jon'
 # -*- coding: utf-8 -*-
 
 import smtplib
-import logging
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 from environment import *
-# from database import *
-# from jobs import *
 
 
 log = logging.getLogger()
@@ -31,9 +28,9 @@ def arg_checker(args, required=None):
 
 
 def email(ini_file, job, job_id):
-    Env = Environment(ini_file)
+    env = Environment(ini_file)
 
-    if Env.getSetting('mailserver') is not None:
+    if env.getSetting('mailserver') is not None:
         me = 'noreply@sharedshelf.org'
 
         status = job.status(ini_file, 'id', job_id)
@@ -54,7 +51,7 @@ def email(ini_file, job, job_id):
         msg.attach(part1)
 
         try:
-            server = smtplib.SMTP(Env.getSetting('mailserver'))
+            server = smtplib.SMTP(env.getSetting('mailserver'))
             server.sendmail(me, you, msg.as_string())
             server.quit()
             status = {'status': 'Success'}
@@ -69,21 +66,25 @@ def email(ini_file, job, job_id):
 
 def email_message(message):
 
+    # feel free to change the default promo message, this was originally developed to notify when a batch job was
+    # finished generating user requested data and to provide a link to fetch the zipped results
     if type(message) is list:
-    # expect 2 items in list
-        promo_msg = message[0]
-        main_msg = message[1]
+        # expect 2 items in list
+        if len(message) == 1:
+            promo_msg = "Your files are ready to download"
+            main_msg = message
+        else:
+            promo_msg = message[0]
+            main_msg = message[1]
     else:
         promo_msg = "Your files are ready to download"
         main_msg = message
 
-
+    # everything after here can be customized for generating html formatted email
     promo_block = '<p style="font-family: Times New Roman, Times, serif; font-size: 36px; font-weight: bold; line-height: 38px; word-spacing: -1px; letter-spacing: -1px; color: #5FD665 !important; margin: 0; ">%s.</p>' % promo_msg
     main_block = '<p style="color: #000000; font-family: Arial, sans-serif; font-size: 16px; line-height: 21px; margin: 1em 0;"> %s</p>' % main_msg
 
-    # print "promo: ", promo_msg
-    # print "main: ", main_msg
-    html = """\
+    header_start = """\
     <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
     <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
@@ -92,7 +93,7 @@ def email_message(message):
         <title>Shared Shelf</title>
     </head> """
 
-    html2 = """
+    body_start = """
     <body style="width:100% !important; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; margin:0; padding:0;">
         <style type="text/css">
             table td {border-collapse: collapse;}
@@ -103,148 +104,21 @@ def email_message(message):
                     text-decoration: none;
                 }
         </style>
-
-    <table style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt; margin: 0 !important; padding: 0 !important; width: 100% !important; line-height: 100% !important;" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-            <td>
-                <table style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt; margin: 16px auto 16px auto;" cellpadding="0" cellspacing="0" border="0" bgcolor="#FFFFFF" width="632" height="36" valign="top">
-                     <tr>
-                        <td width="16"></td>
-                        <td valign="top">
-                            <table style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" cellpadding="0" cellspacing="0" border="0" bgcolor="#000000" height="36" valign="top">
-                                <tr>
-                                    <td width="16" height="36"></td>
-                                    <td width="584" height="36" valign="center">
-                                            <a href="http://catalog.sharedshelf.artstor.org/login.html" target="_blank"> <img src="http://design.artstor.acit.com/design2/sharedshelfemail/ShSh_White_v2-01.gif" alt="Shared Shelf" title="Shared Shelf" width="113" height="16" style="outline:none; text-decoration:none; -ms-interpolation-mode: bicubic; display:block; border: none;" /></a></td>
-                                </tr>
-                            </table>
-                        </td>
-                        <td width="16"></td>
-                    </tr>
-                    <tr>
-                        <td width="16"></td>
-                        <td height="64"></td>
-                        <td width="16"></td>
-                    <tr>
-                    <tr>
-                        <td width="16"></td>
-                        <td valign="top">
-                            <table style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" cellpadding="0" cellspacing="0" border="0" width="600">
-                                <tr>
-                                    <td width="108"></td>
-                                    <td width="384" align="center">
     """
-    html3 = """                                    </td>
-                                    <td width="108"></td>
-                                </tr>
-                            </table>
-                        </td>
-                        <td width="16"></td>
-                    </tr>
-                    <tr>
-                        <td width="16"></td>
-                        <td height="64"></td>
-                        <td width="16"></td>
-                    <tr>
-                    <tr>
-                        <td width="16"></td>
-                        <td>
-                            <hr style="background-color: #DCDCDC; color: #DCDCDC; border: 0; margin: 0; height: 1px; width: 600px;" />
-                        </td>
-                        <td width="16"></td>
-                    </tr>
-                    <tr>
-                        <td width="16"></td>
-                        <td height="34"></td>
-                        <td width="16"></td>
-                    </tr>
-"""
-    html4 = """
-                    <tr>
-                        <td width="16"></td>
-                        <td valign="top">
-                            <table style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" cellpadding="0" cellspacing="0" border="0" width="600">
-                                <tr>
-                                    <td width="50"></td>
-                                    <td width="500">
+
+    # do any extra stuff here like links to home page, email us links, etc...
+    body_content = """
 """
 
-#                                        <p style="color: #000000; font-family: Arial, sans-serif; font-size: 16px; line-height: 21px; margin: 1em 0;"> The selected media files from the <strong> %s PROJECT_HERE </strong> have been zipped and are <a href="" style="font-size: 16px; font-weight: bold; color: #000000; text-decoration: underline;" target="_blank">ready to download</a>. This link will expire in 3 days.</p>
-    html5 = """                                        <p style="color: #000000; font-family: Arial, sans-serif; font-size: 16px; line-height: 21px; margin: 1em 0;">Thanks,<br />Shared Shelf Support</p>
-                                    </td>
-                                    <td width="50"></td>
-                                </tr>
-                            </table>
-                        </td>
-                        <td width="16"></td>
-                    </tr>
-                    <tr>
-                        <td width="16"></td>
-                        <td height="64"></td>
-                    <tr>
-                    <tr>
-                        <td width="16"></td>
-                            <td>
-                                <hr style="background-color: #DCDCDC; color: #DCDCDC; border: 0; margin: 0; height: 1px; width: 600px;" />
-                        </td>
-                        <td width="16"></td>
-                    </tr>
-                    <tr>
-                        <td width="16"></td>
-                        <td>
-                            <table style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" cellpadding="0" cellspacing="0" border="0" width="600">
-                                <tr>
-                                    <td width="300" height="72" valign="center" align="center">
-                                        <a href="http://help.artstor.org/sshelp/index.php/Training_Options" style="font-family: Times New Roman, Times, serif; font-size: 18px; line-height: 26px; color: #000000; text-decoration: underline;" target="_blank">Training Sessions</a>
-                                    </td>
-                                    <td width="300" height="72" valign="center" align="center">
-                                        <a href="http://www.youtube.com/playlist?list=PLO02jn_Rv19pW8kfUPmGTcO3qkhhrUCdM" style="font-family: Times New Roman, Times, serif; font-size: 18px; line-height: 26px; color: #000000; text-decoration: underline;" target="_blank">How-to Videos</a>
-                                    </td>
-                                    <td width="300" height="72" valign="center" align="center">
-                                        <a href="http://help.artstor.org/sshelp/index.php/Shared_Shelf_Help" style="font-family: Times New Roman, Times, serif; font-size: 18px; line-height: 26px; color: #000000; text-decoration: underline;" target="_blank">Online Help</a>
-                                    </td>
-                                <tr>
-                            </table>
-                        </td>
-                        <td width="16"></td>
-                    </tr>
-                    <tr>
-                        <td width="16"></td>
-                        <td>
-                            <table style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" cellpadding="0" cellspacing="0" border="0" width="600" bgcolor="#F4F4F4" style="background-color: #F4F4F4;">
-                                <tr>
-                                    <td width="16"></td>
-                                    <td width="376"><p style="margin: 1em 0; padding-top: 4px; padding-left: 0px; padding-bottom: 4px; font-size: 12px; line-height: 18px; color: #A7A7A7; font-family: Arial, sans-serif;"><a href="mailto:support@sharedshelf.org" target="_blank" style="font-family: Arial, sans-serif; font-size: 12px; line-height: 18px; color: #A7A7A7; text-decoration: underline;">support@sharedshelf.org</a><br> © Artstor, 151 East 61st Street, New York, NY 10065</p></td>
-                                    <td width="16"></td>
-                                    <td width="176" align="right">
-                                        <table style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" cellpadding="0" cellspacing="0" border="0">
-                                            <tr>
-                                                <td><a href="http://artstor.wordpress.com/" target="_blank"> <img src="http://design.artstor.acit.com/design2/sharedshelfemail/social-media-02.gif" alt="Artstor Blog" alt="Artstor Blog" height="28" width="28" style="outline:none; text-decoration:none; -ms-interpolation-mode: bicubic; display:block; border: none;"/></a></td>
-                                                <td width="8"></td>
-                                                <td><a href="http://www.youtube.com/user/artstor" target="_blank"> <img src="http://design.artstor.acit.com/design2/sharedshelfemail/social-media-04.gif" alt="Artstor Channel" alt="Artstor Channel" height="28" width="28" style="outline:none; text-decoration:none; -ms-interpolation-mode: bicubic; display:block; border: none;" /></a></td>
-                                                <td width="8"></td>
-                                                <td><a href="http://www.facebook.com/ARTstor" target="_blank"> <img src="http://design.artstor.acit.com/design2/sharedshelfemail/social-media-01.gif" alt="Facebook" alt="Facebook" height="28" width="28" style="outline:none; text-decoration:none; -ms-interpolation-mode: bicubic; display:block; border: none;" /></a></td>
-                                                <td width="8"></td>
-                                                <td><a href="http://twitter.com/ARTstor" target="_blank"> <img src="http://design.artstor.acit.com/design2/sharedshelfemail/social-media-03.gif" alt="Twitter" alt="Twitter" height="28" width="28" style="outline:none; text-decoration:none; -ms-interpolation-mode: bicubic; display:block; border: none;" /></a></td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                    <td width="16"></td>
-                                </tr>
-                            </table>
-                        </td>
-                        <td width="16"></td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
-    <!-- End of wrapper table -->
+    body_end = """
     </body>
+    """
+
+    header_end = """
     </html>
     """
 
-    return html + html2 + promo_block + html3 + html4 + main_block + html5
+    return header_start + body_start + promo_block + main_block + body_content + body_end + header_end
 
 
 def email_completion_msg(msg):

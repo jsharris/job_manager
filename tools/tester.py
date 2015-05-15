@@ -10,7 +10,7 @@ import unittest
 import logging
 
 
-def buildLogging():
+def build_logging():
     log = logging.getLogger()
     log.setLevel(logging.INFO)
     fh = logging.FileHandler('job_manager.log')
@@ -30,8 +30,8 @@ class TestJobManagerAPI(unittest.TestCase):
         self.auth_key = 'makeThisHardToGuess'
         self.job = None
 
-        buildLogging()
-        log = logging.getLogger()
+        build_logging()
+        # log = logging.getLogger()
 
         url = '%s/new' % self.base_url
         params = {'email': self.email, 'job_type': self.job_type, 'notify': self.notify}
