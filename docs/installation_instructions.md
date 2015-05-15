@@ -1,7 +1,8 @@
-# Job Manager Installation Instructions
+# Job Manager 
+## Installation Instructions
 * Requires: working from an account with sudo privs
 * Requires: a postgreSQL account with admin role
-* Assumes: Linux, easily adaptable to other Unix type platforms
+* Assumes: Linux (ubuntu), easily adaptable to other Unix/Linux platforms
 
 ## Account Creation from an account with sudo privs
 * sudo useradd job_manager
