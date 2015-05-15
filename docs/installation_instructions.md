@@ -69,8 +69,8 @@ Assumes Ubuntu 12.04, change as required for platform specific commands
     
     
 ## Optional - Install a ProxyPass rule for Apache
-Add this before the ProxyPass / ProxyPassReverse entry for / - if no ProxyPass, add right after DocumentRoot definition
-Warning:  Make sure your apache is configured correctly before enabling any ProxyPass rules
+Add this before the ProxyPass / ProxyPassReverse entry for / - if no ProxyPass, add right after DocumentRoot definition<br>
+!!! Warning:  Make sure your apache is configured correctly before enabling any ProxyPass rules<br>
 Change the port if necessary to the one you configured in the ini file
 
     ProxyPass        /job_manager/	http://localhost:9989/
