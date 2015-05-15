@@ -8,10 +8,10 @@
 * sudo passwd job_manager
 
 ## Account Configuration
-* sudo job_manager
+    sudo job_manager
 
 ### Create a python virtual environment
-* virtualenv Ð-no-site-packages Env
+    virtualenv Ð-no-site-packages Env
 
 ### Update path so local python is found first
 Edit .profile and add the following to the end of the file
