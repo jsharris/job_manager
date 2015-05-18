@@ -32,6 +32,9 @@ Add python packages
     pip install requests
     pip install psycopg2
     
+### Get the code
+    git clone git@github.com:jsharris/job_manager.git
+    
 ### Localization
 Edit job_manager/scripts/start_job_manager_service.sh
 
