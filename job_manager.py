@@ -63,7 +63,7 @@ def update_job():
         return ujson.dumps(data)
     try:
         percentage = int(request.args['percentage'])
-    except:
+    except ValueError:
         return ujson.dumps({'status': 'Failure', 'message': 'Percentage not between 0 and 100'})
     if percentage < 0 or percentage > 100:
         return ujson.dumps({'status': 'Failure', 'message': 'Percentage not between 0 and 100'})
@@ -143,9 +143,10 @@ def flip_notify_job():
 def usage():
     return render_template('usage.html')
 
+
 @app.route('/')
-def hello_world():
-    return 'Hello World!'
+def default():
+    return render_template('usage.html')
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:
@@ -155,5 +156,4 @@ if __name__ == '__main__':
     env = Environment(ini_file)
     app.debug = True
     local['ini_file'] = ini_file
-    # app.run(host='0.0.0.0', port=9989)
     app.run(host='0.0.0.0', port=int(env.getSetting('port')))
