@@ -7,5 +7,5 @@ Simple web based API providing a framework for batch job tracking.
 
 ### Install Docs
 See docs/installation_instructions for full details<br>
-* Assumes being installed by and admin or a user with sudo privs.
+* Assumes being installed by an admin or a user with sudo privs.
 * Must also have access to a postgreSQL account with an admin role as a user and a database will be created.
